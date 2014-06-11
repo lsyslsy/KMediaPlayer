@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT += phonon
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,8 +14,20 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        widget.cpp
+    kmplayer.cpp \
+    mediaplayer.cpp \
+    dialog.cpp \
+    mediavideowidget.cpp
 
-HEADERS  += widget.h
+HEADERS  += \
+    mediaplayer.h \
+    dialog.h \
+    kmplayer.h \
+    mediavideowidget.h
 
-FORMS    += widget.ui
+FORMS    += widget.ui \
+    mediaplayer.ui \
+    dialog.ui
+
+RESOURCES += \
+    KMP.qrc
