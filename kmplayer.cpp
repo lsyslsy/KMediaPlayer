@@ -8,13 +8,33 @@ KMPlayer::KMPlayer(QWidget *parent) :
    kmp = new MediaPlayer(this);
    QVBoxLayout *layout = new QVBoxLayout();
    layout->addWidget(kmp);
-   layout->setContentsMargins(0, 0, 0, 0);
+   layout->setMargin(0);
+   layout->setSpacing(0);
+
    setLayout(layout);
-   setMinimumSize(100, 100);
+   setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+  // setMinimumSize(100, 100);
   // kmp->ui
 }
 
 KMPlayer::~KMPlayer()
+{
+   // delete ui;
+}
+
+
+/*!
+  write settings to ini file.
+*/
+void KMPlayer::writeSettings()
+{
+   // delete ui;
+}
+
+/*!
+  read settings from ini file.
+*/
+void KMPlayer::readSettings()
 {
    // delete ui;
 }

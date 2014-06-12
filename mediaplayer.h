@@ -29,12 +29,19 @@ public:
 
 public slots:
     void openFile();
+    //! 播放与暂停
     void playPause();
-   // void rewind();
-   // void forward();
-
+    //! 重放
+    void rewind();
+    //! 上一个.
+    void backward();
+    //! 下一个.
+    void forward();
+    //! 清除播放列表.
+    void clearPlayList();
 private slots:
-
+    //! 更新显示时间.
+    void updateTime();
 private:
 
     QMenu *fileMenu;
@@ -43,7 +50,8 @@ private:
     QPushButton *rewindButton;              //!< 前一首
     QPushButton *forwardButton;             //!< 下一首
 
-    QLabel *timeLabel;
+    QLabel * currentTimeLabel;              //!< current time label
+    QLabel * totalTimeLabel;                //!< total time label
     QLabel *progressLabel;
     Phonon::VolumeSlider *volumeSlider;           //!< 音量条
 

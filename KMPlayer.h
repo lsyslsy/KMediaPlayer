@@ -13,6 +13,11 @@ public:
     explicit KMPlayer(QWidget *parent = 0);
     ~KMPlayer();
     MediaPlayer *kmp;
+
+    //! 写入配置文件.
+    void writeSettings();
+    //! 读取配置文件.
+    void readSettings();
 private:
 
 

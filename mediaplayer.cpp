@@ -1,4 +1,4 @@
-
+﻿
 
 #include "mediaplayer.h"
 #include "ui_mediaplayer.h"
@@ -15,20 +15,29 @@ MediaPlayer::MediaPlayer(QWidget *parent) :
    // ui->playButton->setIcon(playIcon);
     //
     QHBoxLayout *hlayout1 = new QHBoxLayout;
-    km_videoWidget->setFixedSize(480,204);
+    km_videoWidget->setFixedSize(480,204);                  // 设置画面大小
     hlayout1->addWidget(km_videoWidget);
 
     QHBoxLayout *hlayout2 = new QHBoxLayout;
-    hlayout2->addStretch();
+
+    currentTimeLabel = new QLabel("00:00:00", this);
+
+
     progressSlider = new Phonon::SeekSlider;
     progressSlider->setMediaObject(&km_MediaObject);
-    hlayout2->addWidget(progressSlider);
+    progressSlider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+    totalTimeLabel = new QLabel("00:00:00", this);
+    hlayout2->addWidget(currentTimeLabel);
+    hlayout2->addStretch();
+    hlayout2->addWidget(progressSlider, 1);
     hlayout2->addStretch();
 
+    hlayout2->addWidget(totalTimeLabel);
 
     QHBoxLayout *hlayout3 = new QHBoxLayout;
     openButton = new QPushButton(this);
-    openButton->setIcon(style()->standardIcon(QStyle::SP_DirOpenIcon));
+    openButton->setIcon(style()->standardIcon(QStyle::));
 
 
     playButton = new QPushButton(this);
@@ -59,26 +68,38 @@ MediaPlayer::MediaPlayer(QWidget *parent) :
     mainlayout->addLayout(hlayout1);
     mainlayout->addLayout(hlayout2);
     mainlayout->addLayout(hlayout3);
-
+    mainlayout->setContentsMargins(0, 0, 0, 0);
     setLayout(mainlayout);
-    setFixedSize(480,272);
+
+    setFixedSize(480,272);          // 设置播放器尺寸
 
 
-    //信号与槽
+    //播放控制
    connect(openButton, SIGNAL(clicked()), this, SLOT(openFile()));
    connect(playButton, SIGNAL(clicked()), this, SLOT(playPause()));
-   // connect(forwardButton, SIGNAL(clicked()), this, SLOT(forward()));
+   connect(rewindButton, SIGNAL(clicked()), this, SLOT(rewind()));
+   connect(forwardButton, SIGNAL(clicked()), this, SLOT(forward()));
+
+
+
+   connect(&km_MediaObject, SIGNAL(totalTimeChanged(qint64)), this, SLOT(updateTime()));
+   connect(&km_MediaObject, SIGNAL(tick(qint64)), this, SLOT(updateTime()));
+
+
     Phonon::createPath(&km_MediaObject, km_videoWidget);
     km_audioOutputPath = Phonon::createPath(&km_MediaObject, &km_AudioOutput);
 
 }
 
+/*!
+ * ... text ...
+ */
 MediaPlayer::~MediaPlayer()
 {
     //delete ui;
 }
 
-//! Oen Media File.
+
 /*!
   打开窗口，并播放视频.
 */
@@ -89,8 +110,12 @@ void MediaPlayer::openFile()
 
     km_MediaObject.setCurrentSource(Phonon::MediaSource(fileName));
     km_MediaObject.play();
+
 }
 
+/*!
+  暂停与播放.
+*/
 void MediaPlayer::playPause()
 {
     if (km_MediaObject.state() == Phonon::PlayingState)
@@ -106,6 +131,55 @@ void MediaPlayer::playPause()
     }
 }
 
+//! 更新显示时间.
+void MediaPlayer::updateTime()
+{
+    long len = km_MediaObject.totalTime();
+    long pos = km_MediaObject.currentTime();
+    QString timeString;
+    if (pos || len)
+    {
+        int sec = pos/1000;
+        int min = sec/60;
+        int hour = min/60;
+        int msec = pos;
+
+        QTime playTime(hour%60, min%60, sec%60, msec%1000);
+        sec = len / 1000;
+        min = sec / 60;
+        hour = min / 60;
+        msec = len;
+
+        QTime stopTime(hour%60, min%60, sec%60, msec%1000);
+        QString timeFormat = "hh:mm:ss";
+        timeString = playTime.toString(timeFormat);
+        totalTimeLabel->setText(stopTime.toString(timeFormat));
+
+    }
+    currentTimeLabel->setText(timeString);
+
+}
+
+void MediaPlayer::backward()
+{
+
+}
+
+void MediaPlayer::forward()
+{
+
+}
+
+void MediaPlayer::rewind()
+{
+
+}
+
+//! 清除播放列表.
+void MediaPlayer::clearPlayList()
+{
+
+}
 
 /*void MediaPlayer::initVideoWindow()
 {

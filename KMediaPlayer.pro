@@ -23,7 +23,8 @@ HEADERS  += \
     mediaplayer.h \
     dialog.h \
     kmplayer.h \
-    mediavideowidget.h
+    mediavideowidget.h \
+    MyHeader.h
 
 FORMS    += widget.ui \
     mediaplayer.ui \
